@@ -1,0 +1,50 @@
+@page "/login"
+@inject NavigationManager NavigationManager
+
+<PageTitle>Admin Login - The Daily Harvest</PageTitle>
+
+<Header />
+<main class="main-content">
+    <div class="login-container">
+        <h2>Admin Login</h2>
+        @* Let's make sure we switch the default admin credentials away from 'admin'/'admin' to something more secure *@
+        <form @onsubmit="HandleLogin" style="display: flex; flex-direction: column; max-width: 300px;">
+            <input type="text"
+                   placeholder="Username"
+                   @bind="username"
+                   style="margin-bottom: 1rem; padding: 0.5rem;"
+                   autofocus />
+            <input type="password"
+                   placeholder="Password"
+                   @bind="password"
+                   style="margin-bottom: 1rem; padding: 0.5rem;" />
+            <button type="submit" style="padding: 0.5rem;">Login</button>
+            @if (!string.IsNullOrEmpty(loginError))
+            {
+                <p style="color: red; margin-top: 1rem;">@loginError</p>
+            }
+        </form>
+    </div>
+</main>
+<Footer />
+
+@code {
+    private string username = "";
+    private string password = "";
+    private string loginError = "";
+
+    private void HandleLogin()
+    {
+        if (username == "admin" && password == "admin")
+        {
+            loginError = "";
+            username = "";
+            password = "";
+            NavigationManager.NavigateTo("/admin");
+        }
+        else
+        {
+            loginError = "Invalid credentials";
+        }
+    }
+}

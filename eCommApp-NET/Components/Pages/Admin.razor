@@ -1,0 +1,64 @@
+@page "/admin"
+
+<PageTitle>Admin Portal - The Daily Harvest</PageTitle>
+
+<Header />
+<main class="main-content">
+    <div class="admin-portal">
+        <h2>Welcome to the admin portal.</h2>
+        <div style="margin-top: 2rem;">
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <div style="color: red; margin-bottom: 0.5rem;">
+                    <span>@((MarkupString)errorMessage)</span>
+                </div>
+            }
+            <label for="salePercent">Set Sale Percent (% off for all items): </label>
+            <input id="salePercent"
+                   type="text"
+                   @bind="inputValue"
+                   style="margin-left: 1rem; padding: 0.5rem; width: 80px;" />
+            <div style="margin-top: 1rem;">
+                <button @onclick="HandleSubmit" style="margin-right: 1rem;">
+                    Submit
+                </button>
+                <button @onclick="HandleEndSale">
+                    End Sale
+                </button>
+            </div>
+        </div>
+        <p style="margin-top: 1rem; color: green;">
+            @(salePercent > 0 ? $"All products are {salePercent}% off!" : "No sale active.")
+        </p>
+        <a href="/">
+            <button style="margin-top: 2rem;">Back to Storefront</button>
+        </a>
+    </div>
+</main>
+<Footer />
+
+@code {
+    private decimal salePercent = 0;
+    private string inputValue = "0";
+    private string errorMessage = "";
+
+    private void HandleSubmit()
+    {
+        if (decimal.TryParse(inputValue, out var sanitizedValue))
+        {
+            salePercent = sanitizedValue;
+            errorMessage = "";
+        }
+        else
+        {
+            errorMessage = $"Invalid input\n\"{inputValue}\"\nPlease enter a valid number.";
+        }
+    }
+
+    private void HandleEndSale()
+    {
+        salePercent = 0;
+        inputValue = "0";
+        errorMessage = "";
+    }
+}

@@ -1,0 +1,59 @@
+@if (Product != null)
+{
+    <div class="modal-backdrop" @onclick="OnClose">
+        <div class="modal-content" @onclick:stopPropagation="true">
+            <h2>Reviews for @Product.Name</h2>
+            <div class="reviews-list">
+                @if (Product.Reviews.Any())
+                {
+                    @foreach (var review in Product.Reviews)
+                    {
+                        <div class="review">
+                            <p><strong>@review.Author</strong> (@(DateTime.Parse(review.Date).ToShortDateString())):</p>
+                            <p>@((MarkupString)review.Comment)</p>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <p>No reviews yet.</p>
+                }
+            </div>
+            <form @onsubmit="HandleSubmit" class="review-form">
+                <h3>Leave a Review</h3>
+                <input type="text" @bind="author" placeholder="Your name" required />
+                <textarea @bind="comment" placeholder="Your review" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <button @onclick="OnClose" class="close-button">Close</button>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Product? Product { get; set; }
+
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+
+    [Parameter]
+    public EventCallback<Review> OnSubmit { get; set; }
+
+    private string author = "";
+    private string comment = "";
+
+    private async Task HandleSubmit()
+    {
+        var review = new Review
+        {
+            Author = author,
+            Comment = comment,
+            Date = DateTime.Now.ToString("o")
+        };
+
+        await OnSubmit.InvokeAsync(review);
+        author = "";
+        comment = "";
+    }
+}

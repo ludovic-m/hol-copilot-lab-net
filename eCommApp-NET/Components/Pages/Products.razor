@@ -1,0 +1,89 @@
+@page "/products"
+@inject ProductService ProductService
+@inject CartService CartService
+
+<PageTitle>Products - The Daily Harvest</PageTitle>
+
+<Header />
+<main class="main-content">
+    @if (loading)
+    {
+        <div class="loading">Loading products...</div>
+    }
+    else
+    {
+        <div class="products-container">
+            <h2>Our Products</h2>
+            <div class="products-grid">
+                @foreach (var product in products)
+                {
+                    <div class="product-card">
+                        @if (!string.IsNullOrEmpty(product.Image))
+                        {
+                            <img src="@($"products/productImages/{product.Image}")"
+                                 alt="@product.Name"
+                                 class="product-image"
+                                 @onclick="() => ShowReviews(product)" />
+                        }
+                        <div class="product-info">
+                            <h3 class="product-name">@product.Name</h3>
+                            <p class="product-price">$@product.Price.ToString("F2")</p>
+                            @if (!string.IsNullOrEmpty(product.Description))
+                            {
+                                <p class="product-description">@product.Description</p>
+                            }
+                            <button @onclick="() => CartService.AddToCart(product)"
+                                    class="@($"add-to-cart-btn {(product.InStock ? "" : "disabled")}")"
+                                    disabled="@(!product.InStock)">
+                                @(product.InStock ? "Add to Cart" : "Out of Stock")
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</main>
+<Footer />
+
+@if (selectedProduct != null)
+{
+    <ReviewModal Product="@selectedProduct"
+                 OnClose="CloseReviews"
+                 OnSubmit="HandleReviewSubmit" />
+}
+
+@code {
+    private List<Product> products = new();
+    private bool loading = true;
+    private Product? selectedProduct;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await ProductService.GetProductsAsync();
+        loading = false;
+    }
+
+    private void ShowReviews(Product product)
+    {
+        selectedProduct = product;
+    }
+
+    private void CloseReviews()
+    {
+        selectedProduct = null;
+    }
+
+    private void HandleReviewSubmit(Review review)
+    {
+        if (selectedProduct != null)
+        {
+            selectedProduct.Reviews.Insert(0, review);
+            var productIndex = products.FindIndex(p => p.Id == selectedProduct.Id);
+            if (productIndex >= 0)
+            {
+                products[productIndex] = selectedProduct;
+            }
+        }
+    }
+}

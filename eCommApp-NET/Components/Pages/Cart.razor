@@ -1,0 +1,90 @@
+@page "/cart"
+@inject CartService CartService
+@implements IDisposable
+
+<PageTitle>Cart - The Daily Harvest</PageTitle>
+
+<Header />
+<main class="main-content">
+    @if (orderProcessed)
+    {
+        <div class="order-processed-container">
+            <h2>Your order has been processed!</h2>
+            <div class="cart-items-grid">
+                @foreach (var item in processedItems)
+                {
+                    <div class="cart-item-card">
+                        <img src="@($"products/productImages/{item.Image}")" alt="@item.Name" class="cart-item-image" />
+                        <div class="cart-item-info">
+                            <h3>@item.Name</h3>
+                            <p>Price: $@item.Price.ToString("F2")</p>
+                            <p>Quantity: @item.Quantity</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="cart-container">
+            <h2>Your Cart</h2>
+            @if (CartService.CartItems.Count == 0)
+            {
+                <p>Your cart is empty.</p>
+            }
+            else
+            {
+                <div class="cart-items-grid">
+                    @foreach (var item in CartService.CartItems)
+                    {
+                        <div class="cart-item-card">
+                            <img src="@($"products/productImages/{item.Image}")" alt="@item.Name" class="cart-item-image" />
+                            <div class="cart-item-info">
+                                <h3>@item.Name</h3>
+                                <p>Price: $@item.Price.ToString("F2")</p>
+                                <p>Quantity: @item.Quantity</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button @onclick="HandleCheckout" class="checkout-btn">Checkout</button>
+            }
+        </div>
+    }
+</main>
+<Footer />
+
+@if (isCheckingOut)
+{
+    <CheckoutModal OnConfirm="HandleConfirmCheckout" OnCancel="() => isCheckingOut = false" />
+}
+
+@code {
+    private bool isCheckingOut = false;
+    private bool orderProcessed = false;
+    private List<CartItem> processedItems = new();
+
+    protected override void OnInitialized()
+    {
+        CartService.OnChange += StateHasChanged;
+    }
+
+    private void HandleCheckout()
+    {
+        isCheckingOut = true;
+    }
+
+    private void HandleConfirmCheckout()
+    {
+        processedItems = CartService.CartItems.ToList();
+        CartService.ClearCart();
+        isCheckingOut = false;
+        orderProcessed = true;
+    }
+
+    public void Dispose()
+    {
+        CartService.OnChange -= StateHasChanged;
+    }
+}
