@@ -1,0 +1,32 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Test Results
+TestResults/
+[Tt]est[Rr]esult*/
+
+# Coverage reports
+coverage/
+coverage.json
+coverage.opencover.xml
+coverage.info
+*.lcov
+
+# Visual Studio cache/options
+.vs/
+.vscode/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
