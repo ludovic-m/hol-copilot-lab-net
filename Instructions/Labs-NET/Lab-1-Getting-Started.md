@@ -4,7 +4,7 @@
 
 ## Overall Lab Objectives
 
-This 4-hour hands-on lab is designed to give developers practical experience using **GitHub Copilot** as an AI-powered assistant throughout the Software Development Life Cycle (SDLC). You will explore how GitHub Copilot can improve developer productivity, code quality, and security—from feature planning and prototyping to implementation, code review, and remediation.
+Thishands-on lab is designed to give developers practical experience using **GitHub Copilot** as an AI-powered assistant throughout the Software Development Life Cycle (SDLC). You will explore how GitHub Copilot can improve developer productivity, code quality, testing, code review, and remediation.
 
 Through a series of guided, real-world exercises, you will learn how to:
 - Understand GitHub Copilot's role across all phases of the SDLC

@@ -102,7 +102,7 @@ Now let's use GitHub Copilot with the Playwright MCP Server to capture screensho
 2. Use the following prompt to capture a screenshot of the home page:
 
 ```
-Using the Playwright MCP Server, navigate to https://localhost:5001 and take a full-page screenshot of the home page. Save it as "homepage.png" in a "screenshots" folder.
+Using the Playwright MCP Server, navigate to http://localhost:5000 and take a full-page screenshot of the home page. Save it as "homepage.png" in a "screenshots" folder.
 ```
 
 3. **Click "Allow"** when GitHub Copilot asks for permission to use the Playwright tools
@@ -132,7 +132,7 @@ Let's capture screenshots of all the key pages in your application in one go.
 Use this comprehensive prompt in Agent mode:
 
 ```
-Using the Playwright MCP Server, help me document the Daily Harvest Blazor application by taking screenshots of the following pages. Navigate to https://localhost:5001 and:
+Using the Playwright MCP Server, help me document the Daily Harvest Blazor application by taking screenshots of the following pages. Navigate to http://localhost:5000 and:
 
 1. Take a screenshot of the home page and save it as "screenshots/01-home-page.png"
 2. Navigate to the products page (/products) and take a screenshot, save as "screenshots/02-products-page.png"
@@ -161,7 +161,7 @@ Now let's use Playwright to interact with the UI and capture states during user 
 Try this advanced prompt that simulates a user journey:
 
 ```
-Using the Playwright MCP Server, simulate a user shopping journey in the Blazor app at https://localhost:5001:
+Using the Playwright MCP Server, simulate a user shopping journey in the Blazor app at http://localhost:5000:
 
 1. Start at the home page and take a screenshot (screenshots/journey-01-start.png)
 2. Click on the "Products" navigation link
